@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>华悦数科-贷后管理平台</title>
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+		<link rel="shortcut icon" href="/favicon.ico">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/sm.min.css">
+		<link rel="stylesheet" href="css/sm-extend.min.css">
+
+	</head>
+
+	<body>
+		<!-- page集合的容器，里面放多个平行的.page，其他.page作为内联页面由路由控制展示 -->
+		<div class="page-group">
+			<!-- 单个page ,第一个.page默认被展示-->
+			<div class="page">
+				<!-- 标题栏 -->
+				<header class="bar bar-nav" style="background-color: #0894EC;">
+					<a class="icon icon-me pull-left open-panel "></a>
+					<h1 class="title" style="color: #fff;">用户画像</h1>
+				</header>
+
+				<!-- 工具栏 -->
+				<nav class="bar bar-tab">
+					<a class="tab-item external" href="dataPlatform_sumView.html">
+						<span class="icon icon-app"></span>
+						<span class="tab-label">综合概览</span>
+					</a>
+					<a class="tab-item external" href="dataPlatform_bizTrend.html">
+						<span class="icon icon-share"></span>
+						<span class="tab-label">业务趋势</span>
+					</a>
+					<a class="tab-item external active" href="dataPlatform_userPortrait.html">
+						<span class="icon icon-card"></span>
+						<span class="tab-label">用户画像</span>
+					</a>
+				</nav>
+
+				<!-- 这里是页面内容区 -->
+
+				<div class="content">
+					<div class="content-block">
+						<!--<img src="images/省份分布.jpg" style="width: 100%">-->
+						<div id="map_province" style="width:100%; height: 400px;border: 2px solid #D8D8D8"></div>
+					</div>
+					<div class="content-block">
+						<!--<img src="images/男女比例.jpg" style="width: 100%">-->
+						<div id="sex" style="width:100%; height: 300px;border: 2px solid #D8D8D8"></div>
+
+					</div>
+					<div class="content-block">
+						<!--<img src="images/年龄.jpg" style="width: 100%">-->
+						<div id="ages" style="width:100%; height: 300px;border: 2px solid #D8D8D8"></div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 其他的单个page内联页（如果有） -->
+			<div class="page">...</div>
+		</div>
+
+		<!-- popup, panel 等放在这里 -->
+		<div class="panel-overlay"></div>
+		<!-- Left Panel with Reveal effect -->
+		<div class="panel panel-left panel-reveal">
+			<div class="content-block">
+				<p>这是一个侧栏</p>
+				<p></p>
+				<!-- Click on link with "close-panel" class will close panel -->
+				<p>
+					<a href="#" class="close-panel">关闭</a>
+				</p>
+			</div>
+		</div>
+
+		<script type='text/javascript' src='js/zepto.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='js/sm.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='js/sm-extend.min.js' charset='utf-8'></script>
+		<script src="echarts/js/echarts.js"></script>
+		<script type="text/javascript">
+			// 路径配置
+			require.config({
+				paths: {
+					echarts: 'http://echarts.baidu.com/build/dist'
+				}
+			});
+			// 使用
+			require(
+				[
+					'echarts',
+					'echarts/chart/bar', // 使用柱状图就加载bar模块，按需加载
+					'echarts/chart/map',
+					'echarts/chart/pie'
+				],
+				function(ec) {
+
+					/************************地图分布start***************************/
+					var myChart_province = ec.init(document.getElementById('map_province'));
+					var option_province = {
+						title: {
+							text: '用户分布变化',
+							subtext: '',
+							x: 'right',
+							y: 'bottom'
+						},
+						tooltip: {
+							trigger: 'item'
+						},
+						legend: {
+							orient: 'vertical',
+							x: 'left',
+							data: ['总体比例', '男性比例', '女性比例']
+						},
+						dataRange: {
+							min: 0,
+							max: 2500,
+							x: 'left',
+							y: 'bottom',
+							text: ['高', '低'], // 文本，默认为数值文本
+							calculable: true
+						},
+						toolbox: {
+							show: true,
+							orient: 'vertical',
+							x: 'right',
+							y: 'center',
+							feature: {
+								mark: {
+									show: true
+								},
+								dataView: {
+									show: true,
+									readOnly: false
+								},
+								restore: {
+									show: true
+								},
+								saveAsImage: {
+									show: true
+								}
+							}
+						},
+						roamController: {
+							show: true,
+							x: 'right',
+							mapTypeControl: {
+								'china': true
+							}
+						},
+						series: [{
+								name: '总体比例',
+								type: 'map',
+								mapType: 'china',
+								roam: false,
+								itemStyle: {
+									normal: {
+										label: {
+											show: true
+										}
+									},
+									emphasis: {
+										label: {
+											show: true
+										}
+									}
+								},
+								data: [{
+										name: '北京',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '天津',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '上海',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '重庆',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '河北',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '河南',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '云南',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '辽宁',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '黑龙江',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '湖南',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '安徽',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '山东',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '新疆',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '江苏',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '浙江',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '江西',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '湖北',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '广西',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '甘肃',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '山西',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '内蒙古',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '陕西',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '吉林',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '福建',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '贵州',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '广东',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '青海',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '西藏',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '四川',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '宁夏',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '海南',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '台湾',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '香港',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '澳门',
+										value: Math.round(Math.random() * 1000)
+									}
+								]
+							},
+							{
+								name: '男性比例',
+								type: 'map',
+								mapType: 'china',
+								itemStyle: {
+									normal: {
+										label: {
+											show: true
+										}
+									},
+									emphasis: {
+										label: {
+											show: true
+										}
+									}
+								},
+								data: [{
+										name: '北京',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '天津',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '上海',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '重庆',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '河北',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '安徽',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '新疆',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '浙江',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '江西',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '山西',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '内蒙古',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '吉林',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '福建',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '广东',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '西藏',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '四川',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '宁夏',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '香港',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '澳门',
+										value: Math.round(Math.random() * 1000)
+									}
+								]
+							},
+							{
+								name: '女性比例',
+								type: 'map',
+								mapType: 'china',
+								itemStyle: {
+									normal: {
+										label: {
+											show: true
+										}
+									},
+									emphasis: {
+										label: {
+											show: true
+										}
+									}
+								},
+								data: [{
+										name: '北京',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '天津',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '上海',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '广东',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '台湾',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '香港',
+										value: Math.round(Math.random() * 1000)
+									},
+									{
+										name: '澳门',
+										value: Math.round(Math.random() * 1000)
+									}
+								]
+							}
+						]
+					};
+					myChart_province.setOption(option_province);
+					/************************地图分布end***************************/
+					/************************年龄占比start***************************/
+					var myChart_ages = ec.init(document.getElementById('ages'));
+					var option_ages = {
+						title: {
+							text: '年龄占比变化',
+							subtext: '',
+							x: 'right',
+							y: 'bottom'
+						},
+						tooltip: {
+							show: true
+						},
+						legend: {
+							data: ['年龄占比%']
+						},
+						xAxis: [{
+							type: 'category',
+							data: ["00后", "90后", "80后", "70后", "60后", "60前", "未知"]
+						}],
+						yAxis: [{
+							type: 'value'
+						}],
+						series: [{
+							"name": "占比",
+							"type": "bar",
+							"data": [17, 47, 21, 3, 0, 11, 1]
+						}]
+					};
+					// 为echarts对象加载数据
+					myChart_ages.setOption(option_ages);
+					/************************年龄占比end***************************/
+					/************************性别占比start***************************/
+					var myChart_sex = ec.init(document.getElementById('sex'));
+					var option_sex = {
+						title: {
+							text: '性别占比变化',
+							subtext: '',
+							x: 'right',
+							y: 'bottom'
+						},
+						tooltip: {
+							trigger: 'item',
+							formatter: "{a} <br/>{b} : {c} ({d}%)"
+						},
+						legend: {
+							orient: 'vertical',
+							x: 'left',
+							data: ['男性', '女性', '未知']
+						},
+						toolbox: {
+							show: true,
+							feature: {
+								mark: {
+									show: true
+								},
+								dataView: {
+									show: true,
+									readOnly: false
+								},
+								restore: {
+									show: true
+								},
+								saveAsImage: {
+									show: true
+								}
+							}
+						},
+						calculable: false,
+						series: (function() {
+							var series = [];
+							for(var i = 0; i < 30; i++) {
+								series.push({
+									name: '性别占比',
+									type: 'pie',
+									itemStyle: {
+										normal: {
+											label: {
+												show: i > 28
+											},
+											labelLine: {
+												show: i > 28,
+												length: 20
+											}
+										}
+									},
+									radius: [i * 3 + 10, i * 3 + 13],
+									data: [{
+											value: i * 128 + 80,
+											name: '男性'
+										},
+										{
+											value: i * 64 + 160,
+											name: '女性'
+										},
+										{
+											value: i * 32 + 320,
+											name: '未知'
+										}
+									]
+								})
+							}
+							series[0].markPoint = {
+								symbol: 'emptyCircle',
+								symbolSize: series[0].radius[0],
+								effect: {
+									show: true,
+									scaleSize: 12,
+									color: 'rgba(250,225,50,0.8)',
+									shadowBlur: 10,
+									period: 30
+								},
+								data: [{
+									x: '50%',
+									y: '50%'
+								}]
+							};
+							return series;
+						})()
+					};
+					// 为echarts对象加载数据
+					myChart_sex.setOption(option_sex);
+					/************************性别占比end***************************/
+
+					/************************重适应屏幕***************************/
+					window.addEventListener("resize", function() {
+						myChart_province.resize();
+						myChart_sex.resize();
+						myChart_ages.resize();
+						window.location.reload()
+					});
+				}
+
+			);
+		</script>
+
+	</body>
+
+</html>

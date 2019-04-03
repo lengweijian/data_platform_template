@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>华悦科技-贷后管理平台</title>
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+		<link rel="shortcut icon" href="/favicon.ico">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+		<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+
+		<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+		<script src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+		<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
+		<noscript><link rel="stylesheet" type="text/css" href="css/noJS.css" /></noscript>
+
+	</head>
+
+	<body>
+		<div class="content">
+			<!-- 单个page ,第一个.page默认被展示-->
+			<div class="page ">
+				<!-- 标题栏 -->
+				<header class="bar bar-nav" style="background-color: #0894EC;">
+					<a class="icon icon-me pull-left open-panel "></a>
+					<h1 class="title" style="color: #fff;">业务趋势</h1>
+				</header>
+
+				<!-- 工具栏 -->
+				<nav class="bar bar-tab">
+					<a class="tab-item external" href="dataPlatform_sumView.html">
+						<span class="icon icon-app"></span>
+						<span class="tab-label">综合概览</span>
+					</a>
+					<a class="tab-item external  active" href="dataPlatform_bizTrend.html">
+						<span class="icon icon-share"></span>
+						<span class="tab-label">业务趋势</span>
+					</a>
+					<a class="tab-item external" href="dataPlatform_userPortrait.html">
+						<span class="icon icon-card"></span>
+						<span class="tab-label">用户画像</span>
+					</a>
+				</nav>
+
+				<!-- 这里是页面内容区 -->
+				<div class="content">
+					<!--<div id="chartmain" style="margin-top:200px;width:100%; height: 22em;"></div>-->
+					<div id="loan" style="margin-top:60px;width:100%; height: 22em;"></div>
+					<div id="repay" style="margin-top:60px;width:100%; height: 22em;"></div>
+					<div id="serviceCharge" style="margin-top:60px;width:100%; height: 22em;"></div>
+					<div id="historyOverdue" style="margin-top:60px;width:100%; height: 22em;"></div>
+				</div>
+
+			</div>
+
+	</body>
+	<script type="text/javascript" src="js/echarts.js"></script>
+	<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+
+	<script type="text/javascript" src="js/loan.js"></script>
+	<script type="text/javascript" src="js/repay.js"></script>
+	<script type="text/javascript" src="js/serviceCharge.js"></script>
+	<script type="text/javascript" src="js/historyOverdue.js"></script>
+
+	<script type="text/javascript">
+		/************************重适应屏幕***************************/
+		window.addEventListener("resize", function() {
+			window.location.reload();
+			// myChart_province.resize();
+			// myChart_sex.resize();
+			// myChart_ages.resize();
+		});
+	</script>
+
+</html>
